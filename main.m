@@ -1,5 +1,12 @@
 clc;clear;close all;
-path = ginput(10) * 100.0;
+numPoints = input('Enter the number of points you want to input: ');
+
+while ~isnumeric(numPoints) || mod(numPoints, 1) ~= 0 || numPoints < 1
+    disp('Please enter a positive integer.');
+    numPoints = input('Enter the number of points you want to input: ');
+end
+
+path = ginput(numPoints) * 100.0;
 % n次ginput得到n行
 
 n_order       = 7;% order of poly
