@@ -1,4 +1,4 @@
-# Minimum Snap
+# Minimum Snap QP Solver
 
 ## 轨迹描述
 由于每一段轨迹都是一个多项式，因此可以将轨迹表示为，

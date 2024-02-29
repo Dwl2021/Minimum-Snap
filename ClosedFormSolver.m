@@ -1,5 +1,12 @@
 clc;clear;close all;
-path = ginput() * 100.0;
+numPoints = input('Enter the number of points you want to input: ');
+
+while ~isnumeric(numPoints) || mod(numPoints, 1) ~= 0 || numPoints < 1
+    disp('Please enter a positive integer.');
+    numPoints = input('Enter the number of points you want to input: ');
+end
+
+path = ginput(numPoints) * 100.0;
 
 n_order = 7;
 n_seg = size(path, 1) - 1;
@@ -37,14 +44,16 @@ for i=0:n_seg-1
     %#####################################################
     % STEP 4: get the coefficients of i-th segment of both x-axis
     % and y-axis
-    Pxi = [];
-    Pyi = [];
+    Pxi = poly_coef_x((n_order+1)*i+1:(n_order+1)*i+n_order+1); % note (n_order+1) jump to another segment!
+    Pyi = poly_coef_y((n_order+1)*i+1:(n_order+1)*i+n_order+1);
+
     for t=0:tstep:ts(i+1)
-        X_n(k)  = polyval(Pxi,t);
-        Y_n(k)  = polyval(Pyi,t);
+        X_n(k)  = polyval(flip(Pxi),t);
+        Y_n(k)  = polyval(flip(Pyi),t);
         k = k+1;
     end
 end
+
 
 plot(X_n, Y_n ,'Color',[0 1.0 0],'LineWidth',2);
 hold on
@@ -69,11 +78,11 @@ function poly_coef = MinimumSnapCloseformSolver(waypoints, ts, n_seg, n_order)
     R_fp = R_cell{1, 2};
     %#####################################################
     % STEP 3: compute dF
-    dF = [];
-    %
-    %
-    %
-    %
+    dF = [waypoints(1),0,0,0]';
+    for i=1:n_seg
+        dF = [dF;waypoints(i+1)];
+    end
+    dF = [dF;[0,0,0]'];
 
     dP = -inv(R_pp) * R_fp' * dF;
     poly_coef = inv(M) * Ct * [dF;dP];
