@@ -71,7 +71,7 @@ $$
 
 其中$j$表示第$j$段轨迹，总共有$M$段；$\mathbf{p}_j\in\mathbb{R}^8$，而且对于矩阵$Q_j\in \mathbb{R}^{8\times8}$，由$J(T)$原来的表达式中可以看到，当且仅当，$i\ge 4 $且$l\ge4$的时候才有值，所以Q矩阵只有`Q(4:7,4:7)`为非零，并且在非零的部分按照$i$和$l$的值代入公式即可。
 
-## 导数约束
+## 连续性约束
 
 对于每一段轨迹，
 $$
@@ -146,33 +146,32 @@ $$
 & \mathrm{G}\left(\mathrm{T}_{M-1}\right) \cdot \mathrm{p}_{M-1}=\mathrm{x}_{M-1}	\\
 \end{aligned}
 $$
-综上所述可以构建为$\mathbf{A}_d\mathbf{p}_d = \mathbf{d}_d$的形式，，其中$G_0(t)$表示$G(t)$的第一行,
+综上所述可以构建为$\mathbf{A}_d\mathbf{p}_d = \mathbf{d}_d$的形式，其中$G_0(t)$表示$G(t)$的第一行，
 $$
 \mathbf{A}_{d}\mathbf{p}_{d} = \left[\begin{array}{ccc}
 \mathrm{G}(0)_{4 \times 8} & \mathbf{0}_{\mathbf{4} \times \mathbf{8}} & \cdots &\mathbf{0}_{\mathbf{4} \times \mathbf{8}} \\
 
 \mathbf{0}_{\mathbf{4} \times \mathbf{8}} & \mathbf{0}_{\mathbf{4} \times \mathbf{8}}& \cdots  & \mathrm{G}\left(\mathrm{T}_M\right)_{4 \times 8} \\
 
-\mathbf{0}_{\mathbf{1} \times \mathbf{8}}&\mathrm{G}_0\left(\mathrm{T}_1\right)_{1 \times 8} &  \cdots  & \mathbf{0}_{\mathbf{1} \times \mathbf{8}} \\
+\mathrm{G}_0\left(\mathrm{T}_1\right)_{1 \times 8} & \mathbf{0}_{\mathbf{1} \times \mathbf{8}}&  \cdots  & \mathbf{0}_{\mathbf{1} \times \mathbf{8}} \\
 
-\mathbf{0}_{\mathbf{1 \times 8}} & \mathbf{0}_{\mathbf{1} \times \mathbf{8}}& \cdots & \mathbf{0}_{\mathbf{1} \times \mathbf{8}}\\
+\mathbf{0}_{\mathbf{1 \times 8}} & \mathrm{G}_0\left(\mathrm{T}_2\right)_{1 \times 8}& \cdots & \mathbf{0}_{\mathbf{1} \times \mathbf{8}}\\
 
 \vdots & \vdots & \vdots & \vdots 
 \end{array}\right]
 
 \left[\begin{array}{c}
-\mathrm{p}_{start,0} \\
-\vdots \\
-\mathrm{p}_{start,7} \\
-\mathrm{p}_{end,0} \\
-\vdots \\
-\mathrm{p}_{end,7} \\
 \mathrm{p}_{1,0} \\
 \vdots \\
-\mathrm{p}_{1,7}\\\mathrm{p}_{2,0} \\
+\mathrm{p}_{1,7} \\
+\mathrm{p}_{2,0} \\
 \vdots \\
 \mathrm{p}_{2,7}\\
 \vdots\\
+\vdots\\
+\mathrm{p}_{M,0} \\
+\vdots \\
+\mathrm{p}_{M,7} \\
 \end{array}\right]=\left[\begin{array}{c}
 \mathrm{x}_{\text {start }} \\
 \mathrm{v}_{\text {start }} \\
@@ -184,12 +183,15 @@ $$
 \mathrm{j}_{\text {stop }} \\
 \mathrm{x}_1 \\
 \mathrm{x}_2 \\
-\vdots
+\vdots\\
+\mathrm{x}_{M-1}\\
 \end{array}\right]
 $$
 
+其中，$\mathbf{p} \in \mathcal{R}^{8M\times 1}$，边缘条件的也就上面中的前两行矩阵大小是$8\times 8M$，然后中间点有M-1个，所以下面有M-1行，因此$A_d \in \mathcal{R}^{(M+7)\times8M}$。
 
-## 连续性约束
+
+## 导数约束
 
 对于第$j$个点来说，其上一段轨迹的终点和下一段轨迹的起点的状态应该是要相同的，也就是说，要满足，
 $$
