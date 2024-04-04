@@ -6,7 +6,19 @@ while ~isnumeric(numPoints) || mod(numPoints, 1) ~= 0 || numPoints < 1
     numPoints = input('Enter the number of points you want to input: ');
 end
 
-path = ginput(numPoints) * 100.0;
+% path = ginput(numPoints) * 100.0;
+
+figure('Position', [500, 500, 1000, 1000]);
+hold on;
+axis([0 100 0 100]);
+path = [];
+for i=1:numPoints
+    [x, y] = ginput(1);
+    path = [[x,y];path];
+    plot(x, y, 'o', 'MarkerSize', 20, 'MarkerEdgeColor', '#FFA500', 'MarkerFaceColor', '#FFA500');
+end
+hold on;
+
 
 n_order = 7;
 n_seg = size(path, 1) - 1;
@@ -55,9 +67,10 @@ for i=0:n_seg-1
 end
 
 
-plot(X_n, Y_n ,'Color',[0 1.0 0],'LineWidth',2);
+plot(X_n, Y_n ,'Color','#DC143C','LineWidth',5);
 hold on
 scatter(path(1:size(path,1),1),path(1:size(path,1),2));
+hold on;
 
 function poly_coef = MinimumSnapCloseformSolver(waypoints, ts, n_seg, n_order)
     start_cond = [waypoints(1), 0, 0, 0];
